@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="BattleshipLibrary/BattleshipLibrary.csproj" />
   <Project Path="ConsoleUI/ConsoleUI.csproj" />
 </Solution>
