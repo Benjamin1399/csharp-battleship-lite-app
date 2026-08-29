@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleshipLibrary.Models
 {
-    public enum Status
+    public enum GridStatus
     {
         EMPTY,
         POPULATED,
@@ -20,6 +20,6 @@ namespace BattleshipLibrary.Models
 
         public int GridNumber { get; set; }
 
-        public Status GridStatus { get; set; }
+        public GridStatus Status { get; set; }
     }
 }
