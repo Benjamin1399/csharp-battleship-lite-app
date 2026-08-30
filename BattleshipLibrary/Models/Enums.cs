@@ -10,11 +10,11 @@ namespace BattleshipLibrary.Models
     {
         public enum GridStatus
         {
-            EMPTY,
-            POPULATED,
-            MISSED,
-            HIT,
-            SUNK
+            Empty,
+            Populated,
+            Miss,
+            Hit,
+            Sunk
         }
     }
 }
