@@ -12,6 +12,6 @@ namespace BattleshipLibrary.Models
 
         public int GridNumber { get; set; }
 
-        public GridStatus Status { get; set; }
+        public GridStatus Status { get; set; } = GridStatus.Empty;
     }
 }
