@@ -11,7 +11,8 @@ namespace BattleshipLibrary.Models
         EMPTY,
         POPULATED,
         MISSED,
-        HIT
+        HIT,
+        SUNK
     }
 
     public class GridSpotModel
