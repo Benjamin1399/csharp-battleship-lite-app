@@ -12,12 +12,6 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            UserModel player1 = new UserModel();
-
-            BattleshipOperations.WelcomeMessage();
-            BattleshipOperations.SetupPlayerInfo(user, "Enter username for player 1: ");
-            BattleshipOperations.SetupPlayerInfo(user, "Enter username for player 2: ");
-
         }
     }
 }
