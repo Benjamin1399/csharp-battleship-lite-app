@@ -44,6 +44,11 @@ namespace BattleshipLibrary
             throw new NotImplementedException();
         }
 
+        public static bool StoreShot(UserModel model1, UserModel opponentModel, string shotLocation)
+        {
+            throw new NotImplementedException();
+        }
+
         private static void AddGridSpot(UserModel userModel, string letter, int number)
         {
             GridSpotModel spot = new GridSpotModel
