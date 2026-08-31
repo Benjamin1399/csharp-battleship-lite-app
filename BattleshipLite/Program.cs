@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BattleshipLibrary;
+using BattleshipLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +12,70 @@ namespace BattleshipLite
     {
         static void Main(string[] args)
         {
+            WelcomeMessage();
+
+            UserModel model1 = CreatePlayer("Player 1");
+            UserModel model2 = CreatePlayer("Player 2");
 
             Console.ReadLine();
+        }
+
+        private static void WelcomeMessage()
+        {
+            Console.WriteLine("Welcome to Battleship Lite");
+            Console.WriteLine("Created by Tim Corey");
+            Console.WriteLine();
+        }
+
+        private static UserModel CreatePlayer(string playerTitle)
+        {
+            UserModel output = new UserModel();
+
+            Console.WriteLine($"Player information for {playerTitle}");
+
+            // Ask user for name
+            output.UserName = AskForUsersName();
+
+            // Load up shot grid
+            GameLogic.InitialiseGrid(output);
+
+            // Ask the user for their 5 ship placements
+            PlaceShips(output);
+
+            // Clear
+            Console.Clear();
+
+            return output;
+        }
+
+        private static string AskForUsersName()
+        {
+            Console.Write("What is your name: ");
+            string output = Console.ReadLine();
+
+            return output;
+        }
+
+        private static void PlaceShips(UserModel userModel)
+        {
+            GridSpotModel spot = new GridSpotModel();
+
+            do
+            {
+                Console.Write($"Where do you want to place ship number {userModel.ShipLocations.Count + 1 }: ");
+                string location = Console.ReadLine();
+
+
+
+
+                bool isValidLocation = GameLogic.PlaceShip(userModel, location);
+
+                if (isValidLocation == false)
+                {
+                    Console.WriteLine("Invalid location, try again");
+                }
+
+            } while (userModel.ShipLocations.Count < 5);
         }
     }
 }
