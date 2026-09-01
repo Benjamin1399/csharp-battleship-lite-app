@@ -10,6 +10,15 @@ namespace BattleshipLibrary
 {
     public static class GameLogic
     {
+        public static int GetShotCount(UserModel winner)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool IdentifyShotResult(UserModel opponent, string row, int column)
+        {
+            throw new NotImplementedException();
+        }
 
         public static void InitialiseGrid(UserModel userModel)
         {
@@ -39,12 +48,27 @@ namespace BattleshipLibrary
             }
         }
 
+        public static void MarkShotResult(UserModel activePlayer, string row, int column, bool isAHit)
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool PlaceShip(UserModel userModel, string location)
         {
             throw new NotImplementedException();
         }
 
-        public static bool StoreShot(UserModel model1, UserModel opponentModel, string shotLocation)
+        public static bool PlayerStillActive(UserModel opponent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static (string row, int column) SplitShotIntoRowAndColumn(string shot)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool ValidateShot(UserModel activePlayer, string row, int column)
         {
             throw new NotImplementedException();
         }

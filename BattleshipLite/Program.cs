@@ -2,8 +2,11 @@
 using BattleshipLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,90 +18,109 @@ namespace BattleshipLite
         {
             WelcomeMessage();
 
-            UserModel model1 = CreatePlayer("Player 1");
-            UserModel model2 = CreatePlayer("Player 2");
-            UserModel winner = new UserModel();
+            UserModel activePlayer = CreatePlayer("Player 1");
+            UserModel opponent = CreatePlayer("Player 2");
+            UserModel winner = null;
 
-            winner = PlayGame(model1, model2);
+            do
+            {
+                DisplayShotGrid(activePlayer);
 
-            CelebrateWinner(winner);
+                RecordPlayerShot(activePlayer, opponent);
 
+                bool doesGameContinue = GameLogic.PlayerStillActive(opponent);
+
+                if (doesGameContinue == true)
+                {
+                    // Swap using a temp variable
+                    /*UserModel tempHolder = opponent;
+                    opponent = activePlayer;
+                    activePlayer = tempHolder;*/
+
+                    // Use tuple to swap
+                    (activePlayer, opponent) = (opponent, activePlayer);
+                }
+                else
+                {
+                    winner = activePlayer;
+                }
+                
+            } while (winner == null);
+
+            IdentifyWinner(winner);
 
             Console.ReadLine();
         }
 
-        private static void CelebrateWinner(UserModel winner)
+        private static void IdentifyWinner(UserModel winner)
         {
-            Console.WriteLine("HOORAY!!!");
-            Console.WriteLine($"Winner is {winner.UserName}");
-            Console.WriteLine($"Took {winner.LocationsShot.Count} shots");
+            Console.WriteLine($"Congratulations to {winner.UserName} for winning!");
+            Console.WriteLine($"{winner.UserName} took {GameLogic.GetShotCount(winner)} shots.");
         }
 
-        private static UserModel PlayGame(UserModel model1, UserModel model2)
+        private static void RecordPlayerShot(UserModel activePlayer, UserModel opponent)
         {
-            bool gameWon = false;
-            UserModel winner = new UserModel();
+            bool isValidShot = false;
+            string row = "";
+            int column = 0;
 
             do
             {
-                TakeTurn(model1, model2);
-                gameWon = CheckPlayerWon(model1, model2);
+                string shot = AskForShot();
+                (row, column) = GameLogic.SplitShotIntoRowAndColumn(shot);
+                isValidShot = GameLogic.ValidateShot(activePlayer, row, column);
 
-                if (gameWon == false)
+                if (isValidShot == false)
                 {
-                    TakeTurn(model2, model1);
-                    gameWon = CheckPlayerWon(model2, model1);
-                    if (gameWon == true)
-                    {
-                        winner = model2;
-                    }
+                    Console.WriteLine("Invalid shot location. Please try again.");
                 }
-                else
-                {
-                    winner = model1;
-                }
-
-            } while (gameWon == false);
-
-            return winner;
-        }
-
-        private static bool CheckPlayerWon(UserModel userModel, UserModel opponentModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void TakeTurn(UserModel attackerModel, UserModel defenderModel)
-        {
-            DisplayGrid(attackerModel);
-            FireShot(attackerModel, defenderModel);
-            DisplayScore(attackerModel, defenderModel);
-        }
-
-        private static void DisplayScore(UserModel attackerModel, UserModel defenderModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void FireShot(UserModel model1, UserModel model2)
-        {
-            bool isValidShot;
-
-            do
-            {
-                Console.Write("Enter spot to fire on: ");
-                string location = Console.ReadLine();
-
-                isValidShot = GameLogic.StoreShot(model1, model2, location);
 
             } while (isValidShot == false);
 
-            throw new NotImplementedException();
+            // Is spot chosen a hit or a miss
+            bool isAHit = GameLogic.IdentifyShotResult(opponent, row, column);
+
+            // Record results
+            GameLogic.MarkShotResult(activePlayer, row, column, isAHit);
         }
 
-        private static void DisplayGrid(UserModel model1)
+        private static string AskForShot()
         {
-            throw new NotImplementedException();
+            Console.Write("Please enter your shot: ");
+            string output = Console.ReadLine();
+
+            return output;
+        }
+
+        private static void DisplayShotGrid(UserModel activePlayer)
+        {
+            string currentRow = activePlayer.LocationsShot[0].GridLetter;
+
+            foreach (var gridSpot in activePlayer.LocationsShot)
+            {
+                if (gridSpot.GridLetter != currentRow)
+                {
+                    Console.WriteLine();
+                    currentRow = gridSpot.GridLetter;
+                }
+
+                if (gridSpot.Status == GridStatus.Empty)
+                {
+                    Console.Write($" {gridSpot.GridLetter}{gridSpot.GridNumber} ");
+                }
+                else if (gridSpot.Status == GridStatus.Hit)
+                {
+                    Console.WriteLine(" X ");
+                }
+                else if (gridSpot.Status == GridStatus.Miss)
+                {
+                    Console.Write(" O ");
+                }
+                else
+                {
+                    Console.Write(" ? ");
+                }
+            }
         }
 
         private static void WelcomeMessage()
