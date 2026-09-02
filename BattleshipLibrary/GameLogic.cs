@@ -27,15 +27,20 @@ namespace BattleshipLibrary
 
         public static bool IdentifyShotResult(UserModel opponent, string row, int column)
         {
+            int shipIndex = 0;
+
             foreach (GridSpotModel spot in opponent.ShipLocations)
             {
                 if (spot.GridLetter == row && spot.GridNumber == column)
                 {
                     if (spot.Status == GridStatus.Populated)
                     {
+                        opponent.ShipLocations[shipIndex].Status = GridStatus.Sunk;
                         return true;
                     }
                 }
+
+                shipIndex++;
             }
 
             return false;
