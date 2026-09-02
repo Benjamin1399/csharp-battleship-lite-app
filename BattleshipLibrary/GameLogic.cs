@@ -103,7 +103,7 @@ namespace BattleshipLibrary
             (string row, int column) = SplitShotIntoRowAndColumn(location);
 
 
-            bool locationValid = ValidateLocation(userModel, row, column);
+            bool locationValid = ValidateLocationToPlaceShip(userModel, row, column);
 
             if (locationValid == true)
             {
@@ -123,7 +123,7 @@ namespace BattleshipLibrary
             throw new NotImplementedException();
         }
 
-        private static bool ValidateLocation(UserModel userModel, string row, int column)
+        private static bool ValidateLocationToPlaceShip(UserModel userModel, string row, int column)
         {
             List<string> letters = new List<string>
             {
@@ -188,7 +188,18 @@ namespace BattleshipLibrary
 
         public static bool ValidateShot(UserModel activePlayer, string row, int column)
         {
-            throw new NotImplementedException();
+            foreach (GridSpotModel spot in activePlayer.LocationsShot)
+            {
+                if (spot.GridLetter == row && spot.GridNumber == column)
+                {
+                    if (spot.Status != GridStatus.Empty)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private static void AddGridSpot(UserModel userModel, string letter, int number)
