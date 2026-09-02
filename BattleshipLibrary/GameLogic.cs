@@ -27,7 +27,18 @@ namespace BattleshipLibrary
 
         public static bool IdentifyShotResult(UserModel opponent, string row, int column)
         {
-            throw new NotImplementedException();
+            foreach (GridSpotModel spot in opponent.ShipLocations)
+            {
+                if (spot.GridLetter == row && spot.GridNumber == column)
+                {
+                    if (spot.Status == GridStatus.Populated)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static void InitialiseGrid(UserModel userModel)
