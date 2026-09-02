@@ -179,7 +179,11 @@ namespace BattleshipLibrary
 
         public static (string row, int column) SplitShotIntoRowAndColumn(string shot)
         {
-            throw new NotImplementedException();
+
+            string row = shot.Substring(0, 1);
+            int.TryParse(shot.Substring(1, 1), out int column);
+
+            return (row, column);
         }
 
         public static bool ValidateShot(UserModel activePlayer, string row, int column)
