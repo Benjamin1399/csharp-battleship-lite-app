@@ -167,13 +167,21 @@ namespace BattleshipLite
         private static void PlaceShips(UserModel userModel)
         {
             GridSpotModel spot = new GridSpotModel();
+            bool isValidLocation = false;
 
             do
             {
                 Console.Write($"Where do you want to place ship number {userModel.ShipLocations.Count + 1 }: ");
                 string location = Console.ReadLine().ToUpper();
 
-                bool isValidLocation = GameLogic.PlaceShip(userModel, location);
+                try
+                {
+                    isValidLocation = GameLogic.PlaceShip(userModel, location);
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
 
                 if (isValidLocation == false)
                 {
