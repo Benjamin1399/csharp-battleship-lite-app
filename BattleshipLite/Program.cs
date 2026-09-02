@@ -144,6 +144,9 @@ namespace BattleshipLite
             // Load up shot grid
             GameLogic.InitialiseGrid(output);
 
+            //SHow User grid to select where to place ships
+            DisplayShotGrid(output);
+
             // Ask the user for their 5 ship placements
             PlaceShips(output);
 
