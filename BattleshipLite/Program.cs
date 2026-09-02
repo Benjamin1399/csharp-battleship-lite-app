@@ -87,7 +87,7 @@ namespace BattleshipLite
         private static string AskForShot(UserModel activePlayer)
         {
             Console.Write($"{activePlayer.UserName}, please enter your shot: ");
-            string output = Console.ReadLine();
+            string output = Console.ReadLine().ToUpper();
             Console.Clear();
 
             return output;
@@ -168,7 +168,7 @@ namespace BattleshipLite
             do
             {
                 Console.Write($"Where do you want to place ship number {userModel.ShipLocations.Count + 1 }: ");
-                string location = Console.ReadLine();
+                string location = Console.ReadLine().ToUpper();
 
                 bool isValidLocation = GameLogic.PlaceShip(userModel, location);
 

@@ -119,9 +119,6 @@ namespace BattleshipLibrary
                 return false;
             }
 
-
-            
-            throw new NotImplementedException();
         }
 
         private static bool ValidateLocationToPlaceShip(UserModel userModel, string row, int column)
