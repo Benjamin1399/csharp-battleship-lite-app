@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using BattleshipLibrary.Models;
@@ -97,7 +98,70 @@ namespace BattleshipLibrary
 
         public static bool PlaceShip(UserModel userModel, string location)
         {
+            GridSpotModel chosenSpot = new GridSpotModel();
+
+            (string row, int column) = SplitShotIntoRowAndColumn(location);
+
+
+            bool locationValid = ValidateLocation(userModel, row, column);
+
+            if (locationValid == true)
+            {
+                chosenSpot.GridLetter = row;
+                chosenSpot.GridNumber = column;
+                chosenSpot.Status = GridStatus.Populated;
+                userModel.ShipLocations.Add(chosenSpot);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+            
             throw new NotImplementedException();
+        }
+
+        private static bool ValidateLocation(UserModel userModel, string row, int column)
+        {
+            List<string> letters = new List<string>
+            {
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            };
+
+            List<int> numbers = new List<int>
+            {
+                1,
+                2,
+                3,
+                5
+            };
+
+            foreach (GridSpotModel spot in userModel.ShipLocations)
+            {
+                if (spot.GridLetter == row && spot.GridNumber == column)
+                {
+                    if (spot.Status == GridStatus.Populated)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (letters.Contains(row) == true && numbers.Contains(column) == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public static bool PlayerStillActive(UserModel opponent)

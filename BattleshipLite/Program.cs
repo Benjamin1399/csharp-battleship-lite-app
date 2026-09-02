@@ -168,9 +168,6 @@ namespace BattleshipLite
                 Console.Write($"Where do you want to place ship number {userModel.ShipLocations.Count + 1 }: ");
                 string location = Console.ReadLine();
 
-
-
-
                 bool isValidLocation = GameLogic.PlaceShip(userModel, location);
 
                 if (isValidLocation == false)
