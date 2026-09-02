@@ -166,7 +166,15 @@ namespace BattleshipLibrary
 
         public static bool PlayerStillActive(UserModel opponent)
         {
-            throw new NotImplementedException();
+            foreach (GridSpotModel spot in opponent.ShipLocations)
+            {
+                if (spot.Status == GridStatus.Populated)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static (string row, int column) SplitShotIntoRowAndColumn(string shot)
