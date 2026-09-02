@@ -76,7 +76,23 @@ namespace BattleshipLibrary
 
         public static void MarkShotResult(UserModel activePlayer, string row, int column, bool isAHit)
         {
-            throw new NotImplementedException();
+            int spotIndex = 0;
+
+            foreach (GridSpotModel spot in activePlayer.LocationsShot)
+            {
+                if (spot.GridLetter == row && spot.GridNumber == column)
+                {
+                    if (isAHit == true)
+                    {
+                        activePlayer.LocationsShot[spotIndex].Status = GridStatus.Hit;
+                    }
+                    else
+                    {
+                        activePlayer.LocationsShot[spotIndex].Status = GridStatus.Miss;
+                    }
+                }
+                spotIndex++;
+            }
         }
 
         public static bool PlaceShip(UserModel userModel, string location)
