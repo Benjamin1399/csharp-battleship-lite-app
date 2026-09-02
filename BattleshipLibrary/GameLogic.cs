@@ -12,7 +12,17 @@ namespace BattleshipLibrary
     {
         public static int GetShotCount(UserModel winner)
         {
-            throw new NotImplementedException();
+            int shotsTaken = 0;
+
+            foreach (GridSpotModel spot in winner.LocationsShot)
+            {
+                if (spot.Status == GridStatus.Miss || spot.Status == GridStatus.Hit)
+                {
+                    shotsTaken++;
+                }
+            }
+
+            return shotsTaken;
         }
 
         public static bool IdentifyShotResult(UserModel opponent, string row, int column)
