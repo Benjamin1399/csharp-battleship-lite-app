@@ -28,20 +28,17 @@ namespace BattleshipLibrary
 
         public static bool IdentifyShotResult(UserModel opponent, string row, int column)
         {
-            int shipIndex = 0;
-
             foreach (GridSpotModel spot in opponent.ShipLocations)
             {
                 if (spot.GridLetter == row && spot.GridNumber == column)
                 {
                     if (spot.Status == GridStatus.Populated)
                     {
-                        opponent.ShipLocations[shipIndex].Status = GridStatus.Sunk;
+                        spot.Status = GridStatus.Sunk;
                         return true;
                     }
                 }
 
-                shipIndex++;
             }
 
             return false;
@@ -78,22 +75,19 @@ namespace BattleshipLibrary
 
         public static void MarkShotResult(UserModel activePlayer, string row, int column, bool isAHit)
         {
-            int spotIndex = 0;
-
             foreach (GridSpotModel spot in activePlayer.LocationsShot)
             {
                 if (spot.GridLetter == row && spot.GridNumber == column)
                 {
                     if (isAHit == true)
                     {
-                        activePlayer.LocationsShot[spotIndex].Status = GridStatus.Hit;
+                        spot.Status = GridStatus.Hit;
                     }
                     else
                     {
-                        activePlayer.LocationsShot[spotIndex].Status = GridStatus.Miss;
+                        spot.Status = GridStatus.Miss;
                     }
                 }
-                spotIndex++;
             }
         }
 
@@ -163,11 +157,11 @@ namespace BattleshipLibrary
 
         }
 
-        public static bool PlayerStillActive(UserModel opponent)
+        public static bool PlayerStillActive(UserModel player)
         {
-            foreach (GridSpotModel spot in opponent.ShipLocations)
+            foreach (GridSpotModel ship in player.ShipLocations)
             {
-                if (spot.Status == GridStatus.Populated)
+                if (ship.Status == GridStatus.Populated)
                 {
                     return true;
                 }
@@ -178,9 +172,23 @@ namespace BattleshipLibrary
 
         public static (string row, int column) SplitShotIntoRowAndColumn(string shot)
         {
+            string row = "";
+            int column = 0;
+         
+            if (shot.Length != 2)
+            {
+                throw new ArgumentException("This was an invalid shot type", shot);
+            }
 
-            string row = shot.Substring(0, 1);
-            int.TryParse(shot.Substring(1, 1), out int column);
+            char[] shotArray = shot.ToArray();
+            row = shotArray[0].ToString();
+
+            bool isColumnValid = int.TryParse(shot.Substring(1, 1), out column);
+
+            if (isColumnValid == false)
+            {
+                throw new ArgumentException("This was an invalid shot type", shot);
+            }
 
             return (row, column);
         }
